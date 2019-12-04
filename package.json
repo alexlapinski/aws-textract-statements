@@ -5,8 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "preinfra": "npm run -s build",
-    "infra": "node ./dist/infrastructure.js"
+    "infra:validate": "terraform validate",
+    "preinfra:up": "npm run -s infra:validate",
+    "infra:up": "terraform apply",
+    "preinfra:down": "npm run -s infra:validate",
+    "infra:down": "terraform destroy"
   },
   "repository": {
     "type": "git",
