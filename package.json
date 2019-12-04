@@ -1,0 +1,35 @@
+{
+  "name": "textract",
+  "version": "1.0.0",
+  "description": "A small POC using textract to parse bank statements.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "preinfra": "npm run -s build",
+    "infra": "node ./dist/infrastructure.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexlapinski/aws-textract-statements.git"
+  },
+  "keywords": [],
+  "author": "Alex Lapinski <contact@alexlapinski.name>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexlapinski/aws-textract-statements/issues"
+  },
+  "homepage": "https://github.com/alexlapinski/aws-textract-statements#readme",
+  "dependencies": {
+    "aws-sdk": "^2.584.0",
+    "chalk": "^3.0.0",
+    "ramda": "^0.26.1",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.14",
+    "@types/ramda": "^0.26.36",
+    "@types/uuid": "^3.4.6",
+    "dotenv": "^8.2.0",
+    "typescript": "^3.7.3"
+  }
+}
