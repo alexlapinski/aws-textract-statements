@@ -73,9 +73,9 @@ resource "aws_sqs_queue" "document_queue" {
     tags = local.tags
 }
 
-output "bucket_arn" {
-    value = aws_s3_bucket.document_bucket.arn
-    description = "The ARN of the new Bucket"
+output "bucket_name" {
+    value = aws_s3_bucket.document_bucket.bucket
+    description = "The name of the new Bucket"
     depends_on = [
         document_bucket
     ]
