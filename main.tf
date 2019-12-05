@@ -1,8 +1,14 @@
+##
+## Provider
+##
 provider "aws" {
     profile = "aws_reinvent"
     region  = "us-east-1"
 }
 
+##
+## Local Variables
+##
 locals {
     project_name = "textract-poc"
     tags = {
@@ -10,6 +16,9 @@ locals {
     }
 }
 
+##
+## Resources
+##
 resource "aws_s3_bucket" "document_bucket" {
     bucket_prefix = "${local.project_name}-bucket"
     acl           = "private"
@@ -23,6 +32,7 @@ resource "aws_sns_topic" "document_topic" {
 
 resource "aws_iam_role" "document_publish_topic_role" {
     name               = "${local.project_name}-topic-publisher"
+    description        = "The Role used to publish to a project's SNS topic from textract."
     tags               = local.tags
 
     assume_role_policy = <<EOF
@@ -73,18 +83,36 @@ resource "aws_sqs_queue" "document_queue" {
     tags = local.tags
 }
 
+resource "aws_sns_topic_subscription" "sns_to_sqs_subscription" {
+  topic_arn = aws_sns_topic.document_topic.arn
+  protocol  = "sqs"
+  endpoint  = aws_sqs_queue.document_queue.arn
+}
+
+
+##
+## Outputs
+##
 output "bucket_name" {
-    value = aws_s3_bucket.document_bucket.bucket
-    description = "The name of the new Bucket"
-    depends_on = [
+    value       = aws_s3_bucket.document_bucket.bucket
+    description = "The name of the bucket for ingesting documents."
+    depends_on  = [
         document_bucket
     ]
 }
 
-output "publish_topic_role_arn" {
-    value = aws_iam_role.document_publish_topic_role.arn
-    description = "The 'Publish Message to SNS' Role ARN"
-    depends_on = [
+output "topic_arn" {
+    value       = aws_sns_topic.document_topic.arn
+    description = "The ARN of the SNS Topic to publish notifications."
+    depends_on  = [
+        document_bucket
+    ]
+}
+
+output "publish_to_topic_role_arn" {
+    value       = aws_iam_role.document_publish_topic_role.arn
+    description = "The ARN of the Role that is used when publishing to SNS."
+    depends_on  = [
         document_publish_topic_role
     ]
 }
