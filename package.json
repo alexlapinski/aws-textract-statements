@@ -9,7 +9,9 @@
     "preinfra:up": "npm run -s infra:validate",
     "infra:up": "terraform apply",
     "preinfra:down": "npm run -s infra:validate",
-    "infra:down": "terraform destroy"
+    "infra:down": "terraform destroy",
+    "prestart": "npm run -s build",
+    "start": "node ./dist/index.js"
   },
   "repository": {
     "type": "git",

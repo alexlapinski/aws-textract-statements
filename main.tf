@@ -116,3 +116,11 @@ output "publish_to_topic_role_arn" {
         document_publish_topic_role
     ]
 }
+
+output "queue_endpoint" {
+    value       = aws_sqs_queue.document_queue.id
+    description = "The URL for the Queue where we are notified of completion."
+    depends_on  = [
+        document_queue
+    ]
+}
